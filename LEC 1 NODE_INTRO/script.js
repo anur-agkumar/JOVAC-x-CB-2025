@@ -68,7 +68,7 @@ const fs = require('fs')
 
 
 // create folder
-// fs.mkdir("huhuhu",(err)=>{
+// fs.mkdir("newFolder",(err)=>{
 //     if(err){
 //         console.log(err);
 //         return
@@ -79,11 +79,20 @@ const fs = require('fs')
 
 
 //READ FOLDER
-fs.readdir("huhuhu",(err,file)=>{
-    if(err){
-        console.log(err);
-        return
-    }
-    console.log("folder read :", file);
+// fs.readdir("huhuhu",(err,file)=>{
+//     if(err){
+//         console.log(err);
+//         return
+//     }
+//     console.log("folder read :", file);
     
-})
+// })
+
+// fs.rmdir("newFolder",{ recursive : true },(err)=>{
+//     if(err){
+//         console.log("folder path not found :",err);
+//     }else{
+//         console.log("folder deleted successfully"); 
+//     }
+// })
+
