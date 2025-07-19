@@ -26,7 +26,7 @@ router.post("/register",async function (req, res) {
         return res.json({message : "password is required"})
     }
 
-    const user = await userModel.findOne({ email: email });
+    let user = await userModel.findOne({ email: email });
     console.log(user);
     
     if(user){
