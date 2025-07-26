@@ -3,22 +3,67 @@ const ImageKit = require("imagekit");
 const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+const productModel = require("../models/product.model")
 
 
 const router = express.Router();
+
+// detail/174396959435698324
+
+router.get("/detail/:id", async (req, res)=>{
+    const productId = req.params.id
+
+    const product = await productModel.findById(productId)
+
+  res.render("productDetail.ejs" , {product : product})
+
+})
+
+router.get("/update/:id", async(req,res)=>{
+
+  const productId = req.params.id
+
+  const product = await productModel.findById(productId)
+
+  res.render("productUpdate.ejs", {product : product})
+})
+
+
+router.post("/update/:id", upload.single("image") ,async (req, res)=>{
+  const {title , description , category , price  } = req.body
+
+  const productId = req.params.id
+
+
+  await productModel.findByIdAndUpdate(productId , {
+    title : title,
+    description : description,
+    category : category,
+    price : price
+  })
+
+
+
+  res.redirect(`/products/detail/${productId}`)
+
+})
+
+
+router.get("/delete/:id", async(req,res )=>{
+  const productId = req.params.id
+
+  await productModel.findByIdAndDelete(productId)
+
+  res.redirect("/")
+})
 
 router.get("/add", (req, res) => {
   res.render("productForm");
 });
 
 router.post("/add", upload.single("image"), async(req, res) => {
-  // const {title , description , category , price , image} = req.body
+  const {title , description , category , price  } = req.body
 
-  // console.log(title);
-  // console.log(description);
-  // console.log(category);
-  // console.log(price);
-  // console.log(image);
 
   var imagekit = new ImageKit({
     publicKey: "public_M0PAK4NmC1d2995cVHB6hjiBgaE=",
@@ -37,12 +82,20 @@ router.post("/add", upload.single("image"), async(req, res) => {
 
   const imageUrl = result.url
 
-  console.log(imageUrl);
-  
-  
+
+  const product =  await productModel.create({
+    title : title,
+    description : description,
+    category : category,
+    price : price ,
+    image : imageUrl
+  })
 
 
   res.redirect("/");
 });
+
+
+
 
 module.exports = router;
