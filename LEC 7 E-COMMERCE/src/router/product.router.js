@@ -63,14 +63,15 @@ router.get("/add", (req, res) => {
 
 router.post("/add", upload.single("image"), async(req, res) => {
   const {title , description , category , price  } = req.body
-
-
+  
+  
   var imagekit = new ImageKit({
-    publicKey: "public_M0PAK4NmC1d2995cVHB6hjiBgaE=",
-    privateKey : "private_KT7FkfaTOTLNy6lVG+V7iKE2ba4=",
-    urlEndpoint: "https://ik.imagekit.io/ls436o8px",
+    publicKey: process.env.PUBLIC_KEY,
+    privateKey : process.env.PRIVATE_KEY,
+    urlEndpoint: process.env.URLENDPOINT,
   
   });
+
 
 
   const result = await imagekit.upload({
@@ -79,7 +80,8 @@ router.post("/add", upload.single("image"), async(req, res) => {
     isPublished  : true,
     isPrivateFile : false
   })
-
+  console.log("result :",result);
+  
   const imageUrl = result.url
 
 

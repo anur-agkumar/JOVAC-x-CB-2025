@@ -16,7 +16,7 @@ nav {
     background-color: red;
     display: flex;
     align-items: center;
-
+    justify-content: space-between;
     padding: 0 20px;
 }
 
@@ -68,4 +68,18 @@ nav a {
     height: 100%;
     object-fit: contain;
     object-position: center;
+}
+
+
+.filter form {
+    padding: 5px 20px;
+}
+
+.filter form select {
+    padding: 5px 10px;
+}
+
+
+.filter form button {
+     padding: 5px 10px;
 }
