@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/home.css" />
+  </head>
+  <body>
+    <a href="/register">Register new user</a>
+    <div class="main_container">
+      <% users.forEach(elem => { %>
+        <div class="container" data-id="<%= elem._id %>">
+          <img src="<%= elem.picture %>" alt="image" />
+          <h2 class="name"><%= elem.name %></h2>
+
+          <!-- Update input -->
+          <input type="text" placeholder="New name" class="update-input" />
+
+          <!-- Update button -->
+          <button class="update-btn">Update</button>
+
+          <!-- Delete button -->
+          <button class="delete-btn">Delete</button>
+        </div>
+      <% }); %>
+    </div>
+
+    <script>
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const container = e.target.closest('.container');
+          const userId = container.dataset.id;
+
+          const res = await fetch(`/delete/${userId}`, {
+            method: 'DELETE'
+          });
+
+          if (res.ok) {
+            container.remove();
+          }
+        });
+      });
+
+      document.querySelectorAll('.update-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const container = e.target.closest('.container');
+          const userId = container.dataset.id;
+          const input = container.querySelector('.update-input');
+          const newName = input.value.trim();
+
+          if (!newName) return;
+
+         const res = await fetch(`/update/${userId}?name=${newName}`, {
+          method: 'PATCH'
+          });
+
+          if (res.ok) {
+            container.querySelector('.name').textContent = newName;
+            input.value = '';
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
